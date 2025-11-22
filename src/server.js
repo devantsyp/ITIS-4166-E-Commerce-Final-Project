@@ -6,7 +6,7 @@ import YAML from "yamljs";
 
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import itemRoutes from "./routes/itemRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 
 const app = express();
