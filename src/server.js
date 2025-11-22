@@ -4,16 +4,24 @@ import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
 
-import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import itemRoutes from "./routes/itemRoutes.js";
+import itemsRoutes from "./routes/itemsRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 
+// APP SETUP
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(morgan("tiny"));
+
+// ROUTES
+app.use("/items", itemsRoutes);
+
+// ERROR HANDLING
+app.use((req, res, next) => {
+  res.status(404).json({ error: "Not found" });
+});
 
 app.use((err, req, res, next) => {
   console.error(err);
