@@ -1,19 +1,22 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-import swaggerUi from "swagger-ui-express";
-import YAML from "yamljs";
+//import swaggerUi from "swagger-ui-express";
+//import YAML from "yamljs";
 
-import authRoutes from "./routes/authRoutes.js";
+//import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import itemRoutes from "./routes/itemRoutes.js";
-import orderRoutes from "./routes/orderRoutes.js";
+//import itemRoutes from "./routes/itemRoutes.js";
+//import orderRoutes from "./routes/orderRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 app.use(cors());
 app.use(express.json());
 app.use(morgan("tiny"));
+
+app.use("/users", userRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);
