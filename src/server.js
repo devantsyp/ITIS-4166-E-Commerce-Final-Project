@@ -5,7 +5,7 @@ import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
 
 import userRoutes from "./routes/userRoutes.js";
-import itemsRoutes from "./routes/itemsRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 
 // APP SETUP
