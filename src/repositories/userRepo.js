@@ -9,6 +9,23 @@ export async function getAll() {
       role: true,
     },
   });
-  console.log("users are " + users);
+
   return users;
+}
+
+export async function getById(id) {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+    },
+  });
+
+  return user;
 }

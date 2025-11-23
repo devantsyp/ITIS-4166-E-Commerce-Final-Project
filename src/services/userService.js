@@ -1,7 +1,7 @@
 import prisma from "../config/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { getAll } from "../repositories/userRepo.js";
+import { getAll, getById } from "../repositories/userRepo.js";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -41,6 +41,11 @@ export const login = async (req, res) => {
 
 export async function getAllUsers() {
   const result = await getAll();
+  return result;
+}
+
+export async function getUserById(id) {
+  const result = await getById(id);
   return result;
 }
 
