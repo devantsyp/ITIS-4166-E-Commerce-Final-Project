@@ -1,4 +1,4 @@
-import { getAllItems } from "../services/itemsService.js";
+import { getAllItems } from "../services/itemService.js";
 
 export async function getAllItemsHandler(req, res) {
   const {

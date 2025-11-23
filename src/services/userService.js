@@ -1,6 +1,7 @@
-import prisma from "../prisma/index.js";
-import bcrypt from "bcryptjs";
+import prisma from "../config/db.js";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { getAll } from "../repositories/userRepo.js";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -32,12 +33,29 @@ export const login = async (req, res) => {
     { expiresIn: "7d" }
   );
 
-  res.json({ token, user: { id: user.id, name: user.name, email, role: user.role } });
+  res.json({
+    token,
+    user: { id: user.id, name: user.name, email, role: user.role },
+  });
 };
+
+export async function getAllUsers() {
+  const result = await getAll();
+  return result;
+}
 
 export const me = async (req, res) => {
   const user = await prisma.user.findUnique({ where: { id: req.user.id } });
-  res.json({ id: user.id, name: user.name, email: user.email, role: user.role });
+  res.json({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  });
+};
+
+export const getMe = async () => {
+  return me;
 };
 
 export const updateMe = async (req, res) => {

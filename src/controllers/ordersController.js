@@ -1,4 +1,4 @@
-import prisma from "../prisma/index.js";
+import prisma from "../config/db.js";
 
 export const getOrders = async (req, res) => {
   const isAdmin = req.user.role === "ADMIN";

@@ -1,12 +1,14 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-import swaggerUi from "swagger-ui-express";
-import YAML from "yamljs";
+
+//import swaggerUi from "swagger-ui-express";
+//import YAML from "yamljs";
 
 import userRoutes from "./routes/userRoutes.js";
-import productRoutes from "./routes/productRoutes.js";
-import orderRoutes from "./routes/orderRoutes.js";
+import itemsRoutes from "./routes/itemsRoutes.js";
+//import productRoutes from "./routes/productRoutes.js";
+//import orderRoutes from "./routes/orderRoutes.js";
 
 // APP SETUP
 const app = express();
@@ -17,6 +19,7 @@ app.use(morgan("tiny"));
 
 // ROUTES
 app.use("/items", itemsRoutes);
+app.use("/users", userRoutes);
 
 // ERROR HANDLING
 app.use((req, res, next) => {
