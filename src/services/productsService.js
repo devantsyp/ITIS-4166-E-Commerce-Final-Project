@@ -20,7 +20,16 @@ export async function createProduct(data) {
 }
 
 export async function deleteProduct(id) {
-  return await remove(id);
+  try {
+    await remove(id);
+  } catch (err) {
+    if (err.code === "P2025") {
+      const error = new Error(`Product with id ${id} not found`);
+      error.status = 404;
+      throw error;
+    }
+    throw err;
+  }
 }
 
 export async function updateProduct(id, data) {

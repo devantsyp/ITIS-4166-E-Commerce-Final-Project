@@ -60,14 +60,13 @@ export async function createProductHandler(req, res, next) {
 
 export async function deleteProductHandler(req, res, next) {
   try {
-    await deleteProduct(Number(req.params.id));
+    const id = Number(req.params.id);
+
+    await deleteProduct(id);
+
+    return res.status(204).send();
   } catch (err) {
-    if (err.code === "P2025") {
-      const e = new Error(`Product with id ${req.params.id} not found`);
-      e.status = 404;
-      throw e;
-    }
-    next(err);
+    return next(err);
   }
 }
 
