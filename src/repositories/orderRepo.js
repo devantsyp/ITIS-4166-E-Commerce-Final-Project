@@ -6,7 +6,7 @@ import prisma from "../config/db.js";
 export const findOrders = (isAdmin, userId) => {
   return prisma.order.findMany({
     where: isAdmin ? {} : { userId },
-    include: { items: true },
+    include: { orderItems: true },
   });
 };
 
@@ -16,7 +16,7 @@ export const findOrders = (isAdmin, userId) => {
 export const findOrderById = (id) => {
   return prisma.order.findUnique({
     where: { id },
-    include: { items: true },
+    include: { orderItems: true },
   });
 };
 
@@ -37,9 +37,9 @@ export const createOrderRecord = (userId, total, orderItems) => {
     data: {
       userId,
       total,
-      items: { create: orderItems },
+      orderitems: { create: orderItems },
     },
-    include: { items: true },
+    include: { orderItems: true },
   });
 };
 
@@ -55,15 +55,15 @@ export const deleteOrderItems = (orderId) => {
 /**
  * Update an existing order
  */
-export const updateOrderRecord = (id, total, items) => {
+export const updateOrderRecord = (id, total, orderItems) => {
   return prisma.order.update({
     where: { id },
     data: {
       total,
       updatedAt: new Date(),
-      items: { create: items },
+      orderItems: { create: orderItems },
     },
-    include: { items: true },
+    include: { orderItems: true },
   });
 };
 

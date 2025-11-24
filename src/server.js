@@ -29,6 +29,8 @@ app.use("/orders", orderRoutes);
 app.get("/test", (req, res) => res.send("Server is running"));
 app.use("/auth", authRoutes);
 app.use("/category", categoryRoutes);
+app.get("/health", (req, res) => res.send("OK"));
+
 // Swagger ui init
 const apiDocsPath = path.join(process.cwd(), "src/docs/api.yaml");
 const swaggerDocument = YAML.load(apiDocsPath);

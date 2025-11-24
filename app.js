@@ -40,6 +40,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/orders", orderRoutes);
 app.get("/test", (req, res) => res.send("Server is running"));
+app.get("/health", (req, res) => res.send("OK"));
 
 // Catch-all for unknown routes
 app.use((req, res, next) => {
