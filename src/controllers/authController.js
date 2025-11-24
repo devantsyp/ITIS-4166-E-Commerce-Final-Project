@@ -1,9 +1,6 @@
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import prisma from "../prisma/client.js"; // Make sure your Prisma client export is ES module compatible
-import dotenv from "dotenv";
-
-dotenv.config();
+import prisma from "../config/db.js";
 
 // Helper function to generate JWT
 const generateToken = (userId, role) => {
@@ -17,7 +14,7 @@ const generateToken = (userId, role) => {
 // @access  Public
 export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
 
     // Check if user exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -32,7 +29,6 @@ export const register = async (req, res) => {
     // Create user
     const user = await prisma.user.create({
       data: {
-        name,
         email,
         password: hashedPassword,
         role: "USER", // default role

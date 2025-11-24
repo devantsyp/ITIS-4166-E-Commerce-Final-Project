@@ -6,7 +6,8 @@ import cors from "cors";
 //import YAML from "yamljs";
 
 import userRoutes from "./routes/userRoutes.js";
-import itemsRoutes from "./routes/itemsRoutes.js";
+import itemsRoutes from "./routes/productsRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 //import productRoutes from "./routes/productRoutes.js";
 //import orderRoutes from "./routes/orderRoutes.js";
 
@@ -18,8 +19,10 @@ app.use(express.json());
 app.use(morgan("tiny"));
 
 // ROUTES
+app.use("/", authRoutes);
 app.use("/items", itemsRoutes);
 app.use("/users", userRoutes);
+//app.use("/orders", orderRoutes);
 
 // ERROR HANDLING
 app.use((req, res, next) => {

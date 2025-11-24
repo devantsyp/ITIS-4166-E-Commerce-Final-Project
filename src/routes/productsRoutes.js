@@ -1,7 +1,7 @@
 import express from "express";
 
-import { validateItemsQuery } from "../middleware/itemsValidators.js";
-import { getAllItemsHandler } from "../controllers/itemsController.js";
+import { validateItemsQuery } from "../middleware/queryValidator.js";
+import { getAllItemsHandler } from "../controllers/productsController.js";
 
 const router = express.Router();
 

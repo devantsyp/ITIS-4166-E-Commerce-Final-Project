@@ -1,4 +1,5 @@
 import { param, query, body, oneOf } from "express-validator";
+import { handleValidationErrors } from "./handleValidationErrors.js";
 
 const allowedSortFields = ["id", "title", "createdAt"];
 const allowedSortOrders = ["asc", "desc"];
@@ -24,4 +25,6 @@ export const validateItemsQuery = [
     .optional()
     .isInt({ min: 0 })
     .withMessage("offset must be 0 or a positive integer"),
+
+  handleValidationErrors,
 ];

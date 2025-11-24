@@ -1,38 +1,21 @@
-import prisma from "../config/db.js";
+import { getAllItems } from "../services/productsService.js";
 
-export const getProducts = async (req, res) => {
-  const products = await prisma.product.findMany();
-  res.json(products);
-};
+export async function getAllItemsHandler(req, res) {
+  const {
+    search,
+    sortBy = "createdAt",
+    sortOrder = "desc",
+    limit = 10,
+    offset = 0,
+  } = req.query;
 
-export const getProduct = async (req, res) => {
-  const product = await prisma.product.findUnique({
-    where: { id: Number(req.params.id) },
-  });
-  if (!product) return res.status(404).json({ message: "Not found" });
-  res.json(product);
-};
+  const filter = {};
+  if (search) filter.search = search;
+  filter.sortBy = sortBy;
+  filter.sortOrder = sortOrder;
+  filter.limit = parseInt(limit);
+  filter.offset = parseInt(offset);
 
-export const createProduct = async (req, res) => {
-  const { name, price, description, categoryId } = req.body;
-
-  const newProduct = await prisma.product.create({
-    data: { name, price, description, categoryId },
-  });
-
-  res.status(201).json(newProduct);
-};
-
-export const updateProduct = async (req, res) => {
-  const updated = await prisma.product.update({
-    where: { id: Number(req.params.id) },
-    data: req.body,
-  });
-
-  res.json(updated);
-};
-
-export const deleteProduct = async (req, res) => {
-  await prisma.product.delete({ where: { id: Number(req.params.id) } });
-  res.status(204).send();
-};
+  let result = await getAllItems(filter);
+  res.status(200).json(result);
+}

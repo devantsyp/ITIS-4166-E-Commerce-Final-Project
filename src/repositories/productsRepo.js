@@ -10,19 +10,19 @@ export async function getAll(filter) {
     ];
   }
 
-  const posts = await prisma.post.findMany({
+  const products = await prisma.product.findMany({
     where: conditions,
     select: {
       id: true,
-      title: true,
-      content: true,
-      userId: true,
-      createdAt: true,
+      name: true,
+      description: true,
+      price: true,
+      category: true,
     },
     orderBy: { [filter.sortBy]: filter.sortOrder },
     take: filter.limit,
     skip: filter.offset,
   });
 
-  return posts;
+  return products;
 }
