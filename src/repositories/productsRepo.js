@@ -15,9 +15,11 @@ export async function getAll(filter) {
     select: {
       id: true,
       name: true,
-      description: true,
       price: true,
+      categoryId: true,
+      description: true,
       category: true,
+      createdAt: true,
     },
     orderBy: { [filter.sortBy]: filter.sortOrder },
     take: filter.limit,
@@ -37,8 +39,37 @@ export async function getById(id) {
       categoryId: true,
       description: true,
       category: true,
+      createdAt: true,
     },
   });
 
   return product;
+}
+
+export async function create(productData) {
+  const product = await prisma.product.create({
+    data: {
+      name: productData.name,
+      description: productData.description ?? null,
+      price: productData.price,
+      categoryId: Number(productData.categoryId),
+    },
+    select: {
+      id: true,
+      name: true,
+      price: true,
+      categoryId: true,
+      description: true,
+      category: true,
+      createdAt: true,
+    },
+  });
+
+  return product;
+}
+
+export async function remove(id) {
+  await prisma.product.delete({
+    where: { id: Number(id) },
+  });
 }

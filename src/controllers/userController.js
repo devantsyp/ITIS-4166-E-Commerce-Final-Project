@@ -27,7 +27,7 @@ export async function getAllUsersHandler(req, res, next) {
 
 export async function getUserByIdHandler(req, res, next) {
   try {
-    const users = await getUserById(parseInt(req.params.id));
+    const users = await getUserById(Number(req.params.id));
     res.status(200).json(users);
   } catch (err) {
     next(err);
