@@ -9,7 +9,6 @@ import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import productRoutes from "./routes/productsRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
 
 // APP SETUP
 const app = express();

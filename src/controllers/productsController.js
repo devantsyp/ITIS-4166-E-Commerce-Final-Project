@@ -3,6 +3,7 @@ import {
   getProductById,
   createProduct,
   deleteProduct,
+  updateProduct,
 } from "../services/productsService.js";
 
 export async function getAllProductsHandler(req, res, next) {
@@ -58,6 +59,21 @@ export async function deleteProductHandler(req, res, next) {
   } catch (err) {
     if (err.code === "P2025") {
       const e = new Error(`Product with id ${req.params.id} not found`);
+      e.status = 404;
+      throw e;
+    }
+    next(err);
+  }
+}
+
+export async function updateProductHandler(req, res, next) {
+  const id = Number(req.params.id);
+  try {
+    const updated = await updateProduct(id, req.body);
+    res.status(200).json(updated);
+  } catch (err) {
+    if (err.code === "P2025") {
+      const e = new Error(`Product with id ${id} not found`);
       e.status = 404;
       throw e;
     }

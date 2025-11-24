@@ -3,6 +3,7 @@ import {
   getById,
   create,
   remove,
+  update,
 } from "../repositories/productsRepo.js";
 
 export async function getAllProducts(filter) {
@@ -20,4 +21,9 @@ export async function createProduct(data) {
 
 export async function deleteProduct(id) {
   return await remove(id);
+}
+
+export async function updateProduct(id, data) {
+  const product = await update(id, data);
+  return product;
 }

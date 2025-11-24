@@ -68,6 +68,34 @@ export async function create(productData) {
   return product;
 }
 
+export async function update(id, updates) {
+  const product = await prisma.product.update({
+    where: { id: Number(id) },
+    data: {
+      // only update fields that are actually provided
+      ...(updates.name !== undefined && { name: updates.name }),
+      ...(updates.description !== undefined && {
+        description: updates.description,
+      }),
+      ...(updates.price !== undefined && { price: updates.price }),
+      ...(updates.categoryId !== undefined && {
+        categoryId: Number(updates.categoryId),
+      }),
+    },
+    select: {
+      id: true,
+      name: true,
+      price: true,
+      categoryId: true,
+      description: true,
+      category: true,
+      createdAt: true,
+    },
+  });
+
+  return product;
+}
+
 export async function remove(id) {
   await prisma.product.delete({
     where: { id: Number(id) },
