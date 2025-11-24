@@ -11,6 +11,7 @@ import {
 
 export const getOrders = async (req, res) => {
   console.log("REQ.USER:", req.user);
+  const isAdmin = req.user.role === "ADMIN";
   const orders = await findOrders(isAdmin, req.user.id);
   res.json(orders);
 };
