@@ -6,13 +6,13 @@ import cors from "cors";
 //import YAML from "yamljs";
 
 import userRoutes from "./routes/userRoutes.js";
-import itemsRoutes from "./routes/itemsRoutes.js";
+//import itemsRoutes from "./routes/itemsRoutes.js";
 
 //import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productsRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 
 
 // APP SETUP
@@ -29,6 +29,7 @@ app.use("/users", userRoutes);
 app.use("/orders", orderRoutes);
 app.get("/test", (req, res) => res.send("Server is running"));
 app.use("/auth", authRoutes);
+app.use("/category", categoryRoutes);
 
 
 // ERROR HANDLING

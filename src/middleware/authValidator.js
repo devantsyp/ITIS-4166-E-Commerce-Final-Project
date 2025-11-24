@@ -16,3 +16,10 @@ export const protect = (req, res, next) => {
     return res.status(401).json({ message: "Invalid token" });
   }
 }
+
+export const admin = (req, res, next) => {
+  if (req.user.role !== "ADMIN") {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+  next();
+};
