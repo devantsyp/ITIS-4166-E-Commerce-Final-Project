@@ -1,6 +1,6 @@
-import { getAllItems } from "../services/productsService.js";
+import { getAllProducts, getProductById } from "../services/productsService.js";
 
-export async function getAllItemsHandler(req, res) {
+export async function getAllProductsHandler(req, res) {
   const {
     search,
     sortBy = "createdAt",
@@ -16,6 +16,12 @@ export async function getAllItemsHandler(req, res) {
   filter.limit = parseInt(limit);
   filter.offset = parseInt(offset);
 
-  let result = await getAllItems(filter);
+  let result = await getAllProducts(filter);
+  res.status(200).json(result);
+}
+
+export async function getProductByIdHandler(req, res) {
+  let id = parseInt(req.params.id);
+  let result = await getProductById(id);
   res.status(200).json(result);
 }

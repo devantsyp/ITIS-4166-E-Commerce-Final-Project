@@ -26,3 +26,19 @@ export async function getAll(filter) {
 
   return products;
 }
+
+export async function getById(id) {
+  const product = await prisma.product.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      price: true,
+      categoryId: true,
+      description: true,
+      category: true,
+    },
+  });
+
+  return product;
+}

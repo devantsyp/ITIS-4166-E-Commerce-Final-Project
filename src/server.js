@@ -8,7 +8,7 @@ import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productsRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
-//import productRoutes from "./routes/productRoutes.js";
+
 //import orderRoutes from "./routes/orderRoutes.js";
 
 // APP SETUP
@@ -20,7 +20,7 @@ app.use(morgan("tiny"));
 
 // ROUTES
 app.use("/", authRoutes);
-app.use("/items", itemsRoutes);
+app.use("/products", productRoutes);
 app.use("/users", userRoutes);
 //app.use("/orders", orderRoutes);
 

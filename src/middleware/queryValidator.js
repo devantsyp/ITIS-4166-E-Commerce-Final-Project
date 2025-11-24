@@ -28,3 +28,10 @@ export const validateItemsQuery = [
 
   handleValidationErrors,
 ];
+
+export const validateProductId = [
+  param("id")
+    .isInt({ min: 1 })
+    .withMessage("Product ID must be a positive integer"),
+  handleValidationErrors,
+];
