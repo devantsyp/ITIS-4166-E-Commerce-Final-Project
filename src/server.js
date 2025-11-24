@@ -7,8 +7,9 @@ import cors from "cors";
 
 import userRoutes from "./routes/userRoutes.js";
 import itemsRoutes from "./routes/itemsRoutes.js";
+
 //import productRoutes from "./routes/productRoutes.js";
-//import orderRoutes from "./routes/orderRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 // APP SETUP
 const app = express();
@@ -20,6 +21,8 @@ app.use(morgan("tiny"));
 // ROUTES
 app.use("/items", itemsRoutes);
 app.use("/users", userRoutes);
+app.use("/orders", orderRoutes);
+
 
 // ERROR HANDLING
 app.use((req, res, next) => {

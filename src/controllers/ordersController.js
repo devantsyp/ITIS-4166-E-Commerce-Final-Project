@@ -1,23 +1,22 @@
-import prisma from "../config/db.js";
+import {
+  findOrders,
+  findOrderById,
+  findProductById,
+  createOrderRecord,
+  deleteOrderItems,
+  updateOrderRecord,
+  deleteOrderRecord,
+} from "../repositories/orderRepo.js";
 
 export const getOrders = async (req, res) => {
   const isAdmin = req.user.role === "ADMIN";
-
-  const orders = await prisma.order.findMany({
-    where: isAdmin ? {} : { userId: req.user.id },
-    include: { items: true },
-  });
-
+  const orders = await findOrders(isAdmin, req.user.id);
   res.json(orders);
 };
 
 export const getOrder = async (req, res) => {
   const id = Number(req.params.id);
-
-  const order = await prisma.order.findUnique({
-    where: { id },
-    include: { items: true },
-  });
+  const order = await findOrderById(id);
 
   if (!order) return res.status(404).json({ message: "Not found" });
   if (req.user.role !== "ADMIN" && order.userId !== req.user.id)
@@ -28,16 +27,13 @@ export const getOrder = async (req, res) => {
 
 export const createOrder = async (req, res) => {
   const { userId, items } = req.body;
-
   const actualUserId = req.user.role === "ADMIN" ? userId : req.user.id;
 
   let total = 0;
 
   const orderItems = await Promise.all(
     items.map(async (i) => {
-      const product = await prisma.product.findUnique({
-        where: { id: i.itemId },
-      });
+      const product = await findProductById(i.itemId);
       if (!product) throw Error("Invalid product ID");
 
       total += product.price * i.quantity;
@@ -50,14 +46,7 @@ export const createOrder = async (req, res) => {
     })
   );
 
-  const order = await prisma.order.create({
-    data: {
-      userId: actualUserId,
-      total,
-      items: { create: orderItems },
-    },
-    include: { items: true },
-  });
+  const order = await createOrderRecord(actualUserId, total, orderItems);
 
   res.status(201).json(order);
 };
@@ -66,22 +55,19 @@ export const updateOrder = async (req, res) => {
   const id = Number(req.params.id);
   const { items } = req.body;
 
-  const order = await prisma.order.findUnique({ where: { id } });
+  const order = await findOrderById(id);
   if (!order) return res.status(404).json({ message: "Not found" });
 
   if (req.user.role !== "ADMIN" && order.userId !== req.user.id)
     return res.status(403).json({ message: "Forbidden" });
 
-  // delete old items
-  await prisma.orderItem.deleteMany({ where: { orderId: id } });
+  await deleteOrderItems(id);
 
   let total = 0;
 
   const newItems = await Promise.all(
     items.map(async (i) => {
-      const prod = await prisma.product.findUnique({
-        where: { id: i.itemId },
-      });
+      const prod = await findProductById(i.itemId);
       if (!prod) throw Error("Invalid product");
 
       total += prod.price * i.quantity;
@@ -94,15 +80,7 @@ export const updateOrder = async (req, res) => {
     })
   );
 
-  const updated = await prisma.order.update({
-    where: { id },
-    data: {
-      total,
-      updatedAt: new Date(),
-      items: { create: newItems },
-    },
-    include: { items: true },
-  });
+  const updated = await updateOrderRecord(id, total, newItems);
 
   res.json(updated);
 };
@@ -110,13 +88,13 @@ export const updateOrder = async (req, res) => {
 export const deleteOrder = async (req, res) => {
   const id = Number(req.params.id);
 
-  const order = await prisma.order.findUnique({ where: { id } });
+  const order = await findOrderById(id);
   if (!order) return res.status(404).json({ message: "Not found" });
 
   if (req.user.role !== "ADMIN" && order.userId !== req.user.id)
     return res.status(403).json({ message: "Forbidden" });
 
-  await prisma.order.delete({ where: { id } });
+  await deleteOrderRecord(id);
 
   res.status(204).send();
 };
