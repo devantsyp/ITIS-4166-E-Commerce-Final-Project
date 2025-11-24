@@ -6,10 +6,14 @@ import cors from "cors";
 //import YAML from "yamljs";
 
 import userRoutes from "./routes/userRoutes.js";
+import itemsRoutes from "./routes/itemsRoutes.js";
+
+//import productRoutes from "./routes/productRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productsRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 
-//import orderRoutes from "./routes/orderRoutes.js";
 
 // APP SETUP
 const app = express();
@@ -22,7 +26,10 @@ app.use(morgan("tiny"));
 app.use("/", authRoutes);
 app.use("/products", productRoutes);
 app.use("/users", userRoutes);
-//app.use("/orders", orderRoutes);
+app.use("/orders", orderRoutes);
+app.get("/test", (req, res) => res.send("Server is running"));
+app.use("/auth", authRoutes);
+
 
 // ERROR HANDLING
 app.use((req, res, next) => {

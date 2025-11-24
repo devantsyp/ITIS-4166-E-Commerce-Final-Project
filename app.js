@@ -31,6 +31,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/orders", orderRoutes);
+app.get("/test", (req, res) => res.send("Server is running"));
 
 // Catch-all for unknown routes
 app.use((req, res, next) => {
