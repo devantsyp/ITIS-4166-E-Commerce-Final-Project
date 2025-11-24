@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import prisma from "../prisma/client.js"; // Make sure your Prisma client export is ES module compatible
+import prisma from "../../prisma/client.js"; // Make sure your Prisma client export is ES module compatible
 import dotenv from "dotenv";
 
 dotenv.config();

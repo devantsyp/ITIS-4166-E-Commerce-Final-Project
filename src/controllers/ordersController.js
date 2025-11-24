@@ -8,8 +8,9 @@ import {
   deleteOrderRecord,
 } from "../repositories/orderRepo.js";
 
+
 export const getOrders = async (req, res) => {
-  const isAdmin = req.user.role === "ADMIN";
+  console.log("REQ.USER:", req.user);
   const orders = await findOrders(isAdmin, req.user.id);
   res.json(orders);
 };
