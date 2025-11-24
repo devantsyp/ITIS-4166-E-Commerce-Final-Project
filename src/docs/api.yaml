@@ -82,7 +82,7 @@ paths:
   #############################
   # CATEGORIES
   #############################
-  /categories:
+  /category:
     get:
       tags: [Categories]
       summary: Get all categories
@@ -107,7 +107,7 @@ paths:
         "403":
           description: Forbidden
 
-  /categories/{id}:
+  /category/{id}:
     get:
       tags: [Categories]
       summary: Get category by ID
