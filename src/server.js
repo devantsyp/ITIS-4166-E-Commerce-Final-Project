@@ -1,10 +1,6 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-
-//import swaggerUi from "swagger-ui-express";
-//import YAML from "yamljs";
-
 import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import productRoutes from "./routes/productsRoutes.js";
