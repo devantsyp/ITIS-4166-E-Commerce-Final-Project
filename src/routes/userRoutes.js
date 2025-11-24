@@ -14,7 +14,7 @@ router.get("/", getAllUsersHandler);
 router.get("/:id", getUserByIdHandler);
 
 // Authenticated user actions
-//router.get("/me", auth, UserController.getProfile);
+// router.get("/me", auth, UserController.getProfile);
 //router.put("/me", auth, UserController.updateProfile);
 //router.delete("/me", auth, UserController.deleteAccount);
 

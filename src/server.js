@@ -11,6 +11,9 @@ import itemsRoutes from "./routes/itemsRoutes.js";
 //import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import productRoutes from "./routes/productsRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+
 
 // APP SETUP
 const app = express();
@@ -20,7 +23,8 @@ app.use(express.json());
 app.use(morgan("tiny"));
 
 // ROUTES
-app.use("/items", itemsRoutes);
+app.use("/", authRoutes);
+app.use("/products", productRoutes);
 app.use("/users", userRoutes);
 app.use("/orders", orderRoutes);
 app.get("/test", (req, res) => res.send("Server is running"));
