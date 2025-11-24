@@ -7,8 +7,8 @@ info:
 servers:
   - url: http://localhost:3000
     description: Local development
-  - url: https://your-render-url.com
-    description: Deployed API (Render)
+  # - url: https://your-render-url.com
+  #   description: Deployed API (Render)
 
 tags:
   - name: Auth
@@ -22,7 +22,7 @@ paths:
   #############################
   # AUTH
   #############################
-  /api/auth/register:
+  /auth/register:
     post:
       tags: [Auth]
       summary: Register a new user
@@ -38,7 +38,7 @@ paths:
         "400":
           description: Email already exists
 
-  /api/auth/login:
+  /auth/login:
     post:
       tags: [Auth]
       summary: Login user and return JWT
@@ -57,7 +57,7 @@ paths:
   #############################
   # USERS
   #############################
-  /api/users:
+  /users:
     get:
       tags: [Users]
       summary: Get all users (admin only)
@@ -69,7 +69,7 @@ paths:
         "403":
           description: Forbidden
 
-  /api/users/me:
+  /users/me:
     get:
       tags: [Users]
       summary: Get current authenticated user
@@ -82,7 +82,7 @@ paths:
   #############################
   # CATEGORIES
   #############################
-  /api/categories:
+  /categories:
     get:
       tags: [Categories]
       summary: Get all categories
@@ -107,7 +107,7 @@ paths:
         "403":
           description: Forbidden
 
-  /api/categories/{id}:
+  /categories/{id}:
     get:
       tags: [Categories]
       summary: Get category by ID
@@ -166,7 +166,7 @@ paths:
   #############################
   # PRODUCTS
   #############################
-  /api/products:
+  /products:
     get:
       tags: [Products]
       summary: Get all products
@@ -189,7 +189,7 @@ paths:
         "201":
           description: Created
 
-  /api/products/{id}:
+  /products/{id}:
     get:
       tags: [Products]
       summary: Get product by ID
@@ -232,7 +232,7 @@ paths:
   #############################
   # ORDERS
   #############################
-  /api/orders:
+  /orders:
     get:
       tags: [Orders]
       summary: Get all orders (admin only)
@@ -257,7 +257,7 @@ paths:
         "201":
           description: Created
 
-  /api/orders/{id}:
+  /orders/{id}:
     get:
       tags: [Orders]
       summary: Get order by ID (owner or admin)
