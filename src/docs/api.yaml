@@ -1,0 +1,364 @@
+openapi: "3.0.0"
+info:
+  title: E-Commerce API
+  version: "1.0.0"
+  description: REST API for an e-commerce platform including authentication, categories, products, and orders.
+
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: https://your-render-url.com
+    description: Deployed API (Render)
+
+tags:
+  - name: Auth
+  - name: Users
+  - name: Categories
+  - name: Products
+  - name: Orders
+
+paths:
+
+  #############################
+  # AUTH
+  #############################
+  /api/auth/register:
+    post:
+      tags: [Auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRegisterInput"
+      responses:
+        "201":
+          description: User created
+        "400":
+          description: Email already exists
+
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      summary: Login user and return JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserLoginInput"
+      responses:
+        "200":
+          description: Login successful
+        "401":
+          description: Invalid credentials
+
+  #############################
+  # USERS
+  #############################
+  /api/users:
+    get:
+      tags: [Users]
+      summary: Get all users (admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: List of users
+        "403":
+          description: Forbidden
+
+  /api/users/me:
+    get:
+      tags: [Users]
+      summary: Get current authenticated user
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: User profile
+
+  #############################
+  # CATEGORIES
+  #############################
+  /api/categories:
+    get:
+      tags: [Categories]
+      summary: Get all categories
+      responses:
+        "200":
+          description: List of categories
+
+    post:
+      tags: [Categories]
+      summary: Create a category (admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryInput"
+      responses:
+        "201":
+          description: Category created
+        "403":
+          description: Forbidden
+
+  /api/categories/{id}:
+    get:
+      tags: [Categories]
+      summary: Get category by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Category data
+        "404":
+          description: Not found
+
+    put:
+      tags: [Categories]
+      summary: Update category (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryInput"
+      responses:
+        "200":
+          description: Updated
+        "404":
+          description: Not found
+
+    delete:
+      tags: [Categories]
+      summary: Delete category (admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+
+  #############################
+  # PRODUCTS
+  #############################
+  /api/products:
+    get:
+      tags: [Products]
+      summary: Get all products
+      responses:
+        "200":
+          description: List of products
+
+    post:
+      tags: [Products]
+      summary: Create a product (admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductInput"
+      responses:
+        "201":
+          description: Created
+
+  /api/products/{id}:
+    get:
+      tags: [Products]
+      summary: Get product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Product found
+        "404":
+          description: Not found
+
+    put:
+      tags: [Products]
+      summary: Update product (admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductInput"
+      responses:
+        "200":
+          description: Updated
+
+    delete:
+      tags: [Products]
+      summary: Delete product (admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        "204":
+          description: Deleted
+
+  #############################
+  # ORDERS
+  #############################
+  /api/orders:
+    get:
+      tags: [Orders]
+      summary: Get all orders (admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: List of orders
+
+    post:
+      tags: [Orders]
+      summary: Create order (user only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderInput"
+      responses:
+        "201":
+          description: Created
+
+  /api/orders/{id}:
+    get:
+      tags: [Orders]
+      summary: Get order by ID (owner or admin)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Order data
+        "404":
+          description: Not found
+
+    put:
+      tags: [Orders]
+      summary: Update an order (owner only)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Updated
+
+    delete:
+      tags: [Orders]
+      summary: Delete order (admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        "204":
+          description: Deleted
+
+#######################################
+# COMPONENT SCHEMAS
+#######################################
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    UserRegisterInput:
+      type: object
+      required: [name, email, password]
+      properties:
+        name: { type: string }
+        email: { type: string }
+        password: { type: string }
+
+    UserLoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string }
+        password: { type: string }
+
+    Category:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+
+    CategoryInput:
+      type: object
+      required: [name]
+      properties:
+        name: { type: string }
+
+    Product:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        price: { type: number }
+        categoryId: { type: integer }
+
+    ProductInput:
+      type: object
+      required: [name, price, categoryId]
+      properties:
+        name: { type: string }
+        price: { type: number }
+        categoryId: { type: integer }
+
+    Order:
+      type: object
+      properties:
+        id: { type: integer }
+        userId: { type: integer }
+        status: { type: string }
+        total: { type: number }
+
+    OrderInput:
+      type: object
+      required: [total]
+      properties:
+        total: { type: number }
+        status: { type: string }
