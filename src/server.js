@@ -6,7 +6,6 @@ import cors from "cors";
 //import YAML from "yamljs";
 
 import userRoutes from "./routes/userRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import productRoutes from "./routes/productsRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
