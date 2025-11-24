@@ -4,6 +4,7 @@ import {
   validateItemsQuery,
   validateProductId,
   validateCreateProduct,
+  validateUpdateProduct,
 } from "../middleware/queryValidator.js";
 import {
   getAllProductsHandler,
@@ -18,7 +19,7 @@ const router = express.Router();
 router.get("/", validateItemsQuery, getAllProductsHandler);
 router.get("/:id", validateProductId, getProductByIdHandler);
 router.post("/", validateCreateProduct, createProductHandler);
-router.delete("/:id", deleteProductHandler);
-router.put("/:id", updateProductHandler);
+router.delete("/:id", validateProductId, deleteProductHandler);
+router.patch("/:id", validateUpdateProduct, updateProductHandler);
 
 export default router;

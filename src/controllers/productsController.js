@@ -38,6 +38,11 @@ export async function getProductByIdHandler(req, res, next) {
   let id = Number(req.params.id);
   try {
     let result = await getProductById(id);
+    if (!result) {
+      const e = new Error(`Product with id ${id} not found`);
+      e.status = 404;
+      throw e;
+    }
     res.status(200).json(result);
   } catch (err) {
     next(err);

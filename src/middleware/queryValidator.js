@@ -100,3 +100,20 @@ export const validateCreateProduct = [
 
   handleValidationErrors,
 ];
+
+export const validateUpdateProduct = [
+  body("name").optional().trim().notEmpty().withMessage("name cannot be empty"),
+  body("price")
+    .optional()
+    .isFloat({ gt: 0 })
+    .withMessage("price must be greater than 0"),
+  body("categoryId")
+    .optional()
+    .isInt({ min: 1 })
+    .withMessage("categoryId must be a positive integer"),
+  body("description")
+    .optional()
+    .isString()
+    .withMessage("description must be a string"),
+  handleValidationErrors,
+];
