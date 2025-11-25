@@ -73,3 +73,11 @@ model OrderItem {
 
   @@unique([orderId, productId])
 }
+
+enum OrderStatus {
+  CART
+  PENDING
+  PAID
+  FULFILLED
+  CANCELLED
+}
