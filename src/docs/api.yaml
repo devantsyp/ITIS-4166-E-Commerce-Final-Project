@@ -2,29 +2,29 @@ openapi: "3.0.0"
 info:
   title: E-Commerce API
   version: "1.0.0"
-  description: >
-    REST API for an e-commerce platform with authentication, users,
-    products, categories, and orders.  
-    All protected routes require a valid JWT via Authorization header.
+  description: |
+    REST API for an e-commerce platform including authentication, users,
+    categories, products, and orders.
 
 servers:
   - url: https://itis-4166-e-commerce-final-project-2.onrender.com/api
     description: Production (Render)
   - url: http://localhost:3000/api
-    description: Local development
+    description: Local Development
 
 tags:
   - name: Auth
   - name: Users
-  - name: Products
   - name: Categories
+  - name: Products
   - name: Orders
 
 paths:
-  #################################
+
+  ###########################
   # AUTH
-  #################################
-  /api/auth/register:
+  ###########################
+  /auth/register:
     post:
       tags: [Auth]
       summary: Register a new user
@@ -37,13 +37,13 @@ paths:
       responses:
         "201":
           description: Successfully registered
-        "400": 
+        "400":
           description: Email already exists
 
-  /api/auth/login:
+  /auth/login:
     post:
       tags: [Auth]
-      summary: Login and receive a JWT
+      summary: Login a user and receive a JWT
       requestBody:
         required: true
         content:
@@ -54,163 +54,45 @@ paths:
         "200":
           description: Login successful
         "401":
-          description: Invalid email or password
+          description: Invalid credentials
 
-  #################################
+  ###########################
   # USERS
-  #################################
-  /api/users:
+  ###########################
+  /users:
     get:
       tags: [Users]
-      summary: Get all users (ADMIN only)
+      summary: Get all users (Admin only)
       security:
         - bearerAuth: []
       responses:
         "200":
-          description: List of users
+          description: List of all users
         "403":
           description: Forbidden
 
-  /api/users/{id}:
+  /users/{id}:
     get:
       tags: [Users]
-      summary: Get user by ID (ADMIN only)
+      summary: Get user by ID
       security:
         - bearerAuth: []
       parameters:
         - name: id
           in: path
-          schema: { type: integer }
           required: true
+          schema:
+            type: integer
       responses:
         "200":
           description: User found
         "404":
-          description: Not found
-        "403":
-          description: Forbidden
+          description: User not found
 
-  /api/users/me/profile:
-    get:
-      tags: [Users]
-      summary: Get current user profile
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: Current user's profile
-
-    put:
-      tags: [Users]
-      summary: Update current user's profile
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserUpdateInput"
-      responses:
-        "200":
-          description: Updated profile
-
-    delete:
-      tags: [Users]
-      summary: Delete current user's account
-      security:
-        - bearerAuth: []
-      responses:
-        "204":
-          description: Deleted
-
-  #################################
-  # PRODUCTS
-  #################################
-  /api/products:
-    get:
-      tags: [Products]
-      summary: Get products (public)
-      parameters:
-        - in: query
-          name: search
-          schema: { type: string }
-        - in: query
-          name: sortBy
-          schema:
-            type: string
-            enum: [id, name, price, createdAt]
-        - in: query
-          name: sortOrder
-          schema:
-            type: string
-            enum: [asc, desc]
-        - in: query
-          name: limit
-          schema: { type: integer }
-        - in: query
-          name: offset
-          schema: { type: integer }
-      responses:
-        "200":
-          description: List of products
-
-    post:
-      tags: [Products]
-      summary: Create a product (ADMIN only)
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema: $ref: "#/components/schemas/ProductInput"
-      responses:
-        "201":
-          description: Created
-
-  /api/products/{id}:
-    get:
-      tags: [Products]
-      summary: Get product by ID
-      parameters:
-        - in: path
-          name: id
-          schema: { type: integer }
-          required: true
-      responses:
-        "200":
-          description: Product found
-        "404":
-          description: Not found
-
-    patch:
-      tags: [Products]
-      summary: Update product (ADMIN only)
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema: $ref: "#/components/schemas/ProductUpdateInput"
-      responses:
-        "200":
-          description: Updated
-
-    delete:
-      tags: [Products]
-      summary: Delete product (ADMIN only)
-      security:
-        - bearerAuth: []
-      responses:
-        "204":
-          description: Deleted
-
-  #################################
+  ###########################
   # CATEGORIES
-  #################################
-  /api/categories:
+  ###########################
+  /categories:
     get:
       tags: [Categories]
       summary: Get all categories
@@ -220,106 +102,91 @@ paths:
 
     post:
       tags: [Categories]
-      summary: Create category (ADMIN only)
+      summary: Create a category (Admin only)
       security:
         - bearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
-            schema: $ref: "#/components/schemas/CategoryInput"
+            schema:
+              $ref: "#/components/schemas/CategoryInput"
       responses:
         "201":
-          description: Created
+          description: Category created
+        "403":
+          description: Forbidden
 
-  /api/categories/{id}:
+  /categories/{id}:
     get:
       tags: [Categories]
       summary: Get category by ID
       parameters:
-        - in: path
-          name: id
-          schema: { type: integer }
+        - name: id
+          in: path
           required: true
+          schema:
+            type: integer
       responses:
         "200":
-          description: Found
+          description: Category found
         "404":
           description: Not found
 
     put:
       tags: [Categories]
-      summary: Update category (ADMIN only)
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema: $ref: "#/components/schemas/CategoryInput"
-      responses:
-        "200":
-          description: Updated
-
-    delete:
-      tags: [Categories]
-      summary: Delete category (ADMIN only)
-      security:
-        - bearerAuth: []
-      responses:
-        "204":
-          description: Deleted
-
-  #################################
-  # ORDERS
-  #################################
-  /api/orders:
-    get:
-      tags: [Orders]
-      summary: Get orders  
-      description: >
-        Admin: returns ALL orders  
-        User: returns ONLY their own orders
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: List of orders
-
-    post:
-      tags: [Orders]
-      summary: Create an order (Authenticated user)
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/OrderCreateInput"
-      responses:
-        "201":
-          description: Created
-
-  /api/orders/{id}:
-    get:
-      tags: [Orders]
-      summary: Get order by ID (Admin or owner)
+      summary: Update category (Admin only)
       security:
         - bearerAuth: []
       parameters:
-        - in: path
-          name: id
-          schema: { type: integer }
+        - name: id
+          in: path
           required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryInput"
       responses:
-        "200": { description: Found }
-        "403": { description: Forbidden }
-        "404": { description: Not found }
+        "200":
+          description: Category updated
+        "404":
+          description: Not found
 
-    put:
-      tags: [Orders]
-      summary: Update order (Admin or owner)
+    delete:
+      tags: [Categories]
+      summary: Delete category (Admin only)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Category deleted
+        "404":
+          description: Not found
+
+  ###########################
+  # PRODUCTS
+  ###########################
+  /products:
+    get:
+      tags: [Products]
+      summary: Get all products
+      responses:
+        "200":
+          description: List of products
+
+    post:
+      tags: [Products]
+      summary: Create product (Admin only)
       security:
         - bearerAuth: []
       requestBody:
@@ -327,33 +194,128 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/OrderUpdateInput"
+              $ref: "#/components/schemas/ProductInput"
       responses:
-        "200": { description: Updated }
+        "201":
+          description: Product created
+
+  /products/{id}:
+    get:
+      tags: [Products]
+      summary: Get product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Product found
+        "404":
+          description: Product not found
+
+    put:
+      tags: [Products]
+      summary: Update product (Admin only)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductInput"
+      responses:
+        "200":
+          description: Updated product
 
     delete:
-      tags: [Orders]
-      summary: Delete order (Admin or owner)
+      tags: [Products]
+      summary: Delete product (Admin only)
       security:
         - bearerAuth: []
       responses:
         "204":
-          description: Deleted
+          description: Product deleted
 
+  ###########################
+  # ORDERS
+  ###########################
+  /orders:
+    get:
+      tags: [Orders]
+      summary: Get orders (Admin gets all, User gets their own)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Orders returned
+
+    post:
+      tags: [Orders]
+      summary: Create a new order
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderInput"
+      responses:
+        "201":
+          description: Order created
+
+  /orders/{id}:
+    get:
+      tags: [Orders]
+      summary: Get order by ID (Admin or Owner)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Order found
+        "404":
+          description: Not found
+
+    put:
+      tags: [Orders]
+      summary: Update an order (Owner only)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Order updated
+
+    delete:
+      tags: [Orders]
+      summary: Delete order (Admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        "204":
+          description: Order deleted
+
+#######################################
+# COMPONENTS
+#######################################
 components:
-  #################################
-  # SECURITY
-  #################################
+
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
 
-  #################################
-  # SCHEMAS
-  #################################
   schemas:
+
     UserRegisterInput:
       type: object
       required: [name, email, password]
@@ -369,12 +331,6 @@ components:
         email: { type: string }
         password: { type: string }
 
-    UserUpdateInput:
-      type: object
-      properties:
-        email: { type: string }
-        password: { type: string }
-
     CategoryInput:
       type: object
       required: [name]
@@ -386,32 +342,11 @@ components:
       required: [name, price, categoryId]
       properties:
         name: { type: string }
+        description: { type: string }
         price: { type: number }
         categoryId: { type: integer }
-        description: { type: string }
 
-    ProductUpdateInput:
-      type: object
-      properties:
-        name: { type: string }
-        price: { type: number }
-        categoryId: { type: integer }
-        description: { type: string }
-
-    OrderCreateInput:
-      type: object
-      required: [items]
-      properties:
-        items:
-          type: array
-          items:
-            type: object
-            required: [itemId, quantity]
-            properties:
-              itemId: { type: integer }
-              quantity: { type: integer }
-
-    OrderUpdateInput:
+    OrderInput:
       type: object
       required: [items]
       properties:
