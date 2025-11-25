@@ -5,7 +5,7 @@ import prisma from "../config/db.js";
 // Helper function to generate JWT
 const generateToken = (userId, role) => {
   return jwt.sign({ userId, role }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
+    expiresIn: "1h",
   });
 };
 
@@ -14,7 +14,7 @@ const generateToken = (userId, role) => {
 // @access  Public
 export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     // Check if user exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -32,7 +32,7 @@ export const register = async (req, res) => {
         name,
         email,
         password: hashedPassword,
-        role: "USER", // default role
+        role,
       },
     });
 
@@ -64,13 +64,15 @@ export const login = async (req, res) => {
     // Check if user exists
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res
+        .status(401)
+        .json({ message: `User with email ${email} not found` });
     }
 
     // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Passwords don't match" });
     }
 
     // Generate JWT
