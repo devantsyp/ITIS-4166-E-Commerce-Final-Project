@@ -7,7 +7,7 @@ info:
     categories, products, and orders.
 
 servers:
-  - url: https://itis-4166-e-commerce-final-project-2.onrender.com/api
+  - url: https://itis-4166-e-commerce-final-project-2.onrender.com/api/docs/#/
     description: Production (Render)
   - url: http://localhost:3000/api
     description: Local Development
