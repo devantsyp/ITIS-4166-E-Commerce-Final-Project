@@ -12,8 +12,6 @@ import authRoutes from "./routes/authRoutes.js";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
 import path from "path";
-import cartRoutes from "./routes/cartRoutes.js";
-
 
 // APP SETUP
 const app = express();
@@ -31,7 +29,6 @@ app.get("/test", (req, res) => res.send("Server is running"));
 app.use("/auth", authRoutes);
 app.use("/category", categoryRoutes);
 app.get("/health", (req, res) => res.send("OK"));
-app.use("/cart", cartRoutes);
 
 // Swagger ui init
 const apiDocsPath = path.join(process.cwd(), "src/docs/api.yaml");
