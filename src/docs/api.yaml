@@ -7,8 +7,8 @@ info:
 servers:
   - url: http://localhost:3000
     description: Local development
-  # - url: https://your-render-url.com
-  #   description: Deployed API (Render)
+  - url: https://itis-4166-e-commerce-final-project-d5ij.onrender.com
+    description: Render environment
 
 tags:
   - name: Auth
