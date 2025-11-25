@@ -260,7 +260,7 @@ paths:
   /orders/{id}:
     get:
       tags: [Orders]
-      summary: Get order by ID (owner or admin)
+      summary: Get order by ID (admin)
       security:
         - bearerAuth: []
       parameters:
@@ -277,7 +277,7 @@ paths:
 
     put:
       tags: [Orders]
-      summary: Update an order (owner only)
+      summary: Update an order (admin only)
       security:
         - bearerAuth: []
       responses:
