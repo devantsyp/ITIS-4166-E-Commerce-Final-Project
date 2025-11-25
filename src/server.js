@@ -31,8 +31,8 @@ app.use("/category", categoryRoutes);
 app.get("/health", (req, res) => res.send("OK"));
 
 // Swagger ui init
-const apiDocsPath = path.join(process.cwd(), "src/docs/api.yaml");
-const swaggerDocument = YAML.load(apiDocsPath);
+//const apiDocsPath = path.join(process.cwd(), "src/docs/api.yaml");
+const swaggerDocument = YAML.load("./src/docs/api.yaml");
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
