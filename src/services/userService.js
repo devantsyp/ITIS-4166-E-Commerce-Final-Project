@@ -1,7 +1,13 @@
 import prisma from "../config/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { getAll, getById } from "../repositories/userRepo.js";
+import {
+  getAll,
+  getById,
+  getMe,
+  deleteMe,
+  updateMe,
+} from "../repositories/userRepo.js";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -33,7 +39,7 @@ export const login = async (req, res) => {
   const token = jwt.sign(
     { id: user.id, role: user.role },
     process.env.JWT_SECRET,
-    { expiresIn: "7d" }
+    { expiresIn: "1h" }
   );
 
   res.json({
@@ -52,36 +58,16 @@ export async function getUserById(id) {
   return result;
 }
 
-export const me = async (req, res) => {
-  const user = await prisma.user.findUnique({ where: { id: req.user.id } });
-  res.json({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-  });
-};
+export async function getCurrentUser(userId) {
+  return await getMe(userId);
+}
 
-export const getMe = async () => {
-  return me;
-};
+export async function deleteCurrentUser() {
+  const result = await deleteMe();
+  return result;
+}
 
-export const updateMe = async (req, res) => {
-  const { email, password } = req.body;
-
-  const data = {};
-  if (email) data.email = email;
-  if (password) data.password = await bcrypt.hash(password, 10);
-
-  const updated = await prisma.user.update({
-    where: { id: req.user.id },
-    data,
-  });
-
-  res.json(updated);
-};
-
-export const deleteMe = async (req, res) => {
-  await prisma.user.delete({ where: { id: req.user.id } });
-  res.status(204).send();
-};
+export async function updateCurrentUser() {
+  const result = await updateMe();
+  return result;
+}
