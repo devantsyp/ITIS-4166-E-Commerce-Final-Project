@@ -8,8 +8,10 @@ info:
     All protected routes require a valid JWT via Authorization header.
 
 servers:
-  - url: http://localhost:3000
-    description: Local Development
+  - url: https://itis-4166-e-commerce-final-project-2.onrender.com/api
+    description: Production (Render)
+  - url: http://localhost:3000/api
+    description: Local development
 
 tags:
   - name: Auth
