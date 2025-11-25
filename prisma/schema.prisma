@@ -39,14 +39,13 @@ model Category {
 }
 
 model Product {
-  id          Int          @id @default(autoincrement())
-  name        String
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
   description String?
-  price       Decimal      @db.Decimal(10, 2)
-  category    Category     @relation(fields: [categoryId], references: [id])
+  price       Float
   categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
   orderItems  OrderItem[]
-  createdAt   DateTime     @default(now())
 }
 
 
