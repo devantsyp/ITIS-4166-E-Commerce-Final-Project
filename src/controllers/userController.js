@@ -33,3 +33,4 @@ export async function getUserByIdHandler(req, res, next) {
     next(err);
   }
 }
+ 
